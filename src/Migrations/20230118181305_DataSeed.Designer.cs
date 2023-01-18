@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackendApi.Migrations
 {
     [DbContext(typeof(BackendApiContext))]
-    [Migration("20230118170351_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230118181305_DataSeed")]
+    partial class DataSeed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -192,7 +192,7 @@ namespace BackendApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("FinishedAt")
+                    b.Property<DateTime>("CompletedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("LessonId")

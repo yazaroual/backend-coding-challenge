@@ -16,7 +16,7 @@ public class BusinessException : Exception
 
     public BusinessException(string message, Exception inner) : base(message, inner) { }
 
-    public BusinessException(ErrorCode code, string message, Exception inner) : base(message, inner)
+    public BusinessException(ErrorCode code, string message, Exception inner = null) : base(message, inner)
     {
         Error = new BusinessError(code, message, inner);
     }

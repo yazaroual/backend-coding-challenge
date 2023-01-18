@@ -5,8 +5,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>BackendApi</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
-    <NoWarn>$(NoWarn);CA2254</NoWarn>
-    <!-- CS1591 warn when a log is formated -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591;CA2254</NoWarn>
+    <!--
+      CS1591 warn when a public method does not have documentation.
+      CA2254 warn when a log is formated
+    -->
   </PropertyGroup>
 
   <ItemGroup>

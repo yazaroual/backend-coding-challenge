@@ -11,5 +11,5 @@ public class UserLesson
     public Lesson Lesson { get; set; }
     public int LessonId { get; set; }
     public DateTime StartedAt { get; set; }
-    public DateTime FinishedAt { get; set; }
+    public DateTime CompletedAt { get; set; }
 }

@@ -151,7 +151,7 @@ namespace BackendApi.Migrations
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
                     LessonId = table.Column<int>(type: "INTEGER", nullable: false),
                     StartedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    FinishedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    CompletedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

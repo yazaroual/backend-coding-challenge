@@ -189,7 +189,7 @@ namespace BackendApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("FinishedAt")
+                    b.Property<DateTime>("CompletedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("LessonId")
