@@ -3,15 +3,13 @@ using BackendApi.Dto;
 namespace BackendApi.Business;
 
 /// <summary>
-/// Business manager for the lessons
+/// Interface of the manager for the lessons
 /// </summary>
-public class LessonBusiness : ILessonBusiness
+public interface ILessonBusiness
 {
     /// <summary>
     /// Save the progress of the user for a specific lesson.
     /// </summary>
     /// <param name="request">Contains the lesson ID, start and finish dates</param>
-    public async Task SaveProgressAsync(SaveProgressDto request)
-    {
-    }
+    Task SaveProgressAsync(SaveProgressDto request);
 }

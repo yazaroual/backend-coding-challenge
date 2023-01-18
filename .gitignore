@@ -4,8 +4,8 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # build and config files
-src/appsettings.json
 bin/*
+db/*.db
 
 # User-specific files
 *.rsuser
