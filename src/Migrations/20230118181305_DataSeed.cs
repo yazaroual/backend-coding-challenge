@@ -76,8 +76,11 @@ namespace BackendApi.Migrations
         }
         private static OperationBuilder<SqlOperation> InsertUser(MigrationBuilder migrationBuilder)
         {
+            //TODO : Add achievements here, they must be created at signup
             return migrationBuilder.Sql(@"
                 INSERT INTO User(FirstName, LastName, CreatedAt, UpdatedAt) VALUES ('User', 'One', datetime(), datetime());
+
+                --Associated achievements but empty
             ");
         }
 

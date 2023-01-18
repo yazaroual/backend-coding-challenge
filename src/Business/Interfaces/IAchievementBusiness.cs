@@ -1,4 +1,5 @@
 using BackendApi.Dto;
+using BackendApi.Models;
 
 namespace BackendApi.Business;
 
@@ -12,8 +13,8 @@ public interface IAchievementBusiness
     /// To be called when a lesson is completed. It will update all the achievements counters of the user.
     /// </summary>
     /// <param name="userId">User that just completed a lesson</param>
-    /// <param name="completedLessonId">Id of the completed lesson</param>
-    Task CalculateAchievementsAsync(int userId, int completedLessonId);
+    /// <param name="completedLesson">The completed lesson</param>
+    Task CalculateAchievementsAsync(int userId, Lesson completedLesson);
 
     /// <summary>
     /// List all the achievements of a specific user
