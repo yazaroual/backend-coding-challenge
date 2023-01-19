@@ -21,9 +21,10 @@ I hope you will enjoy the read !
 - [X] Documentation (API & Database)
 
 ## Start the project
+
 1. Clone repo
 2. Apply migrations `dotnet ef database update`
-3. Run the project !
+3. Run the project
 
 A user was hard coded on the database. You can use User Id `1` for the endpoints.
 
@@ -36,5 +37,9 @@ Find below the database diagramm :
 
 * An error handling middleware was implemented to prevent unhandled errors from bubling to the client
 * Unit tests are done in-memory
+
+## Remarks
+
+I was not sure if the endpoint to share lessons progress was expecting a list or a unique lesson. In theory we can only finish one lesson at once but if there is some kind of offline mode we could change the endpoint to receive all completed lessons when the user is back online.
 
 Thanks !

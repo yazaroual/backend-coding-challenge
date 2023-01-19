@@ -63,11 +63,13 @@ public class LessonBusiness : ILessonBusiness
         await _context.CompletedLesson.AddAsync(completedLesson);
         await _context.SaveChangesAsync();
 
+        _logger.LogInformation($"Lesson - SaveProgress - User {request.UserId} - {lesson.Id} saved as completed");
+
         //Now that the lesson is marked as completed, let's check if it was the final lesson of a chapter or course
         //If it's the case we update CompletedChapter and the associated achievements (Targeting chapters)
-        //If the user completed a chapter, we also want to check if the was the last Chapter of a course
-        //If it's the case we update CompletedCourse entity and the associated achievement (Targeting courses)
-        _logger.LogInformation($"Lesson - SaveProgress - User {request.UserId} - {lesson.Id} saved as completed");
+        //If the user completed a chapter, we also want to check if it was the last Chapter of a course
+        //If it's the case we update CompletedCourse entity and the associated achievements (Targeting courses)
+
         _logger.LogInformation($"Lesson - SaveProgress - User {request.UserId} - Updating achievement ...");
 
         await _achievementBusiness.IncreaseAchievementProgressFor(user.Id, ObjectiveTarget.Lesson);
@@ -118,7 +120,8 @@ public class LessonBusiness : ILessonBusiness
             .Select(c => c.LessonsNumber)
             .FirstOrDefaultAsync();
 
-        if (completedLessonCounter == chapterNumberOfLessons)
+        //As the users can complete multiple times the same lessons
+        if (completedLessonCounter >= chapterNumberOfLessons)
         {
             await _context.CompletedChapter.AddAsync(new CompletedChapter()
             {
@@ -154,7 +157,8 @@ public class LessonBusiness : ILessonBusiness
 
         int chapterNumberOfChapters = course.ChaptersNumber;
 
-        if (completedChaptersCounter == chapterNumberOfChapters)
+        //As the users can complete multiple times the same chapters
+        if (completedChaptersCounter >= chapterNumberOfChapters)
         {
             await _context.CompletedCourse.AddAsync(new CompletedCourse()
             {
