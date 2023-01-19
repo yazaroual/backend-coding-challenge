@@ -10,7 +10,7 @@ While doing this challenge my goals were to :
 3. Implement the API as if it will be used by a client. It means providing enough details on swagger.
 4. Not going too far. This work will allow to open the discussions on various design subjects.
 
-I understand that the position you need to fill involves working on CI/CD. I could have added some github actions to Build, Test on branches and mock a deployment when merged on main but that would probably not add more value to this demo. Still, I added a basic Build & Test on all pushes. I am whiling to discuss how I would have done it for a real project.
+I understand that the position you need to fill involves working on CI/CD. I could have added some github actions to Build, Test on branches and mock a deployment when merged on main but that would probably not add more value to this demo. Still, I added a basic Build & Test on all pushes. I am willing to discuss how I would have done it for a real project.
 
 I hope you will enjoy the read !
 
@@ -40,6 +40,6 @@ Find below the database diagramm :
 
 ## Remarks
 
-I was not sure if the endpoint to share lessons progress was expecting a list or a unique lesson. In theory we can only finish one lesson at once but if there is some kind of offline mode we could change the endpoint to receive all completed lessons when the user is back online.
+I was not sure if the endpoint to share lessons progress was expecting a list or a unique lesson. In theory we can only finish one lesson at a time but if there is some kind of offline mode we could change the endpoint to receive all completed lessons when the user is back online.
 
 Thanks !
