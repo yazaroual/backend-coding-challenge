@@ -31,7 +31,7 @@ A user was hard coded on the database. You can use User Id `1` for the endpoints
 ## Database
 
 Find below the database diagramm :
-![Database diagram](/doc/db-diag.png)
+![Database diagram](/doc/db-diag-last.png)
 
 ## Additional features
 
