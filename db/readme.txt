@@ -1,0 +1,1 @@
+File added to be abble to commit this directory and avoid migration errors if the folder does not exist
