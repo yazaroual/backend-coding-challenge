@@ -70,6 +70,7 @@ public class LessonBusinessTests
         {
             Id = 1,
             Name = "C#",
+            ChaptersNumber = 1,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
             Chapters = new List<Chapter>(){
@@ -77,6 +78,7 @@ public class LessonBusinessTests
                     Id = 1,
                     DisplayOrder = 1,
                     Name = "Keywords",
+                    LessonsNumber = 1,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
                     Lessons = new List<Lesson>(){
@@ -110,7 +112,7 @@ public class LessonBusinessTests
         await _business.SaveProgressAsync(completedLesson);
 
         //Find lesson and check data
-        var savedLesson = _context.UserLesson
+        var savedLesson = _context.CompletedLesson
             .Where(u => u.UserId == 1 && u.LessonId == 1)
             .FirstOrDefault();
 
@@ -118,11 +120,11 @@ public class LessonBusinessTests
         Assert.Equal(completedLesson.StartedAt, savedLesson.StartedAt);
         Assert.Equal(completedLesson.CompletedAt, savedLesson.CompletedAt);
 
-        //Confirm that the progress calculation was called
+        //Verify that we updated achievements for lessons
         _achievementStub.Verify(a =>
-            a.CalculateAchievementsAsync(
+            a.IncreaseAchievementProgressFor(
                 It.Is<int>(u => u == completedLesson.UserId),
-                It.Is<int>(l => l == completedLesson.LessonId)),
+                It.Is<ObjectiveTarget>(t => t == ObjectiveTarget.Lesson)),
                 Times.Once);
     }
 
@@ -181,4 +183,65 @@ public class LessonBusinessTests
         //With the right error code
         Assert.Equal(ErrorCode.LessonTimeMissing, exception.Error.Code);
     }
+
+    [Fact]
+    public async Task SaveProgress_CompletedChapter()
+    {
+        SaveProgressDto completedLesson = new()
+        {
+            UserId = 1,
+            LessonId = 1,
+            StartedAt = DateTime.UtcNow.AddMinutes(-5),
+            CompletedAt = DateTime.UtcNow
+        };
+
+        await _business.SaveProgressAsync(completedLesson);
+
+        //Find completed chapters and check data
+        bool haveCompletedChapters = _context.CompletedChapter
+            .Where(u => u.UserId == 1)
+            .Any();
+
+        Assert.True(haveCompletedChapters);
+
+        //Verify that we updated achievements for chapters
+        _achievementStub.Verify(a =>
+            a.IncreaseAchievementProgressFor(
+                It.Is<int>(u => u == completedLesson.UserId),
+                It.Is<ObjectiveTarget>(t => t == ObjectiveTarget.Chapter)),
+                Times.Once);
+    }
+
+
+    [Fact]
+    public async Task SaveProgress_CompletedCourse()
+    {
+        SaveProgressDto completedLesson = new()
+        {
+            UserId = 1,
+            LessonId = 1,
+            StartedAt = DateTime.UtcNow.AddMinutes(-5),
+            CompletedAt = DateTime.UtcNow
+        };
+
+        await _business.SaveProgressAsync(completedLesson);
+
+        //Find completed chapters and check data
+        bool haveCompletedCourse = _context.CompletedCourse
+            .Where(u => u.UserId == 1)
+            .Any();
+
+        Assert.True(haveCompletedCourse);
+
+        //Verify that we updated achievements for chapters
+        _achievementStub.Verify(a =>
+            a.IncreaseAchievementProgressFor(
+                It.Is<int>(u => u == completedLesson.UserId),
+                It.Is<ObjectiveTarget>(t => t == ObjectiveTarget.Course)),
+                Times.Once);
+    }
+
+
+
+
 }

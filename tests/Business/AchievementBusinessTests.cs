@@ -68,6 +68,7 @@ public class AchievementBusinessTests
         {
             Id = 1,
             Name = "C#",
+            ChaptersNumber = 1,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
             Chapters = new List<Chapter>(){
@@ -75,6 +76,7 @@ public class AchievementBusinessTests
                     Id = 1,
                     DisplayOrder = 1,
                     Name = "Keywords",
+                    LessonsNumber = 1,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
                     Lessons = new List<Lesson>(){
@@ -118,10 +120,38 @@ public class AchievementBusinessTests
                 ObjectiveTarget = ObjectiveTarget.Course,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
+            },
+            new Achievement()
+            {
+                Id = 4,
+                Name = "Complete 25 lessons",
+                ObjectiveGoal = 25,
+                ObjectiveTarget = ObjectiveTarget.Lesson,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            },
+            new Achievement()
+            {
+                Id = 5,
+                Name = "Complete 5 chapters",
+                ObjectiveGoal = 5,
+                ObjectiveTarget = ObjectiveTarget.Chapter,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            },
+            new Achievement()
+            {
+                Id = 6,
+                Name = "Complete 5 Course",
+                ObjectiveGoal = 5,
+                ObjectiveTarget = ObjectiveTarget.Course,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             }
         );
 
         _context.UserAchievement.AddRange(
+            //Completed 5 Lesson
             new UserAchievement()
             {
                 AchievementId = 1,
@@ -131,6 +161,17 @@ public class AchievementBusinessTests
                 UpdatedAt = DateTime.UtcNow,
                 Progress = 5
             },
+            //Did not yet complete 25 Lessons
+            new UserAchievement()
+            {
+                AchievementId = 4,
+                UserId = 1,
+                CompletedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                Progress = 5
+            },
+            //Completed 1 chapter
             new UserAchievement()
             {
                 AchievementId = 2,
@@ -138,6 +179,26 @@ public class AchievementBusinessTests
                 CreatedAt = DateTime.UtcNow.AddHours(-1),
                 UpdatedAt = DateTime.UtcNow,
                 Progress = 0
+            },
+            //Did not yet complete 5 chapters
+            new UserAchievement()
+            {
+                AchievementId = 5,
+                UserId = 1,
+                CompletedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                Progress = 1
+            },
+            //Did not yet complete 5 courses
+            new UserAchievement()
+            {
+                AchievementId = 6,
+                UserId = 1,
+                CompletedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                Progress = 1
             }
         );
 
@@ -176,4 +237,84 @@ public class AchievementBusinessTests
 
         Assert.Empty(results);
     }
+
+    [Fact]
+    public async Task IncreaseAchievementProgressFor_Lesson()
+    {
+        int userThatCompletedALesson = 1;
+        int counterBeforeUpdate = await _context.UserAchievement
+            .Include(a => a.Achievement)
+            .Where(a => a.UserId == userThatCompletedALesson)
+            .Where(a => a.Achievement.ObjectiveTarget == ObjectiveTarget.Lesson)
+            .Where(a => a.Achievement.ObjectiveGoal > a.Progress)
+            .Select(a => a.Progress)
+            .FirstOrDefaultAsync();
+
+        await _business.IncreaseAchievementProgressFor(userThatCompletedALesson, ObjectiveTarget.Lesson);
+
+        //Verify that the counter was updated
+        int counterAfterUpdate = await _context.UserAchievement
+            .Include(a => a.Achievement)
+            .Where(a => a.UserId == userThatCompletedALesson)
+            .Where(a => a.Achievement.ObjectiveTarget == ObjectiveTarget.Lesson)
+            .Where(a => a.Achievement.ObjectiveGoal > a.Progress)
+            .Select(a => a.Progress)
+            .FirstOrDefaultAsync();
+
+        Assert.True(counterAfterUpdate > counterBeforeUpdate);
+    }
+
+    [Fact]
+    public async Task IncreaseAchievementProgressFor_Chapter()
+    {
+        int userThatCompletedALesson = 1;
+        int counterBeforeUpdate = await _context.UserAchievement
+            .Include(a => a.Achievement)
+            .Where(a => a.UserId == userThatCompletedALesson)
+            .Where(a => a.Achievement.ObjectiveTarget == ObjectiveTarget.Chapter)
+            .Where(a => a.Achievement.ObjectiveGoal > a.Progress)
+            .Select(a => a.Progress)
+            .FirstOrDefaultAsync();
+
+        await _business.IncreaseAchievementProgressFor(userThatCompletedALesson, ObjectiveTarget.Chapter);
+
+        //Verify that the counter was updated
+        int counterAfterUpdate = await _context.UserAchievement
+            .Include(a => a.Achievement)
+            .Where(a => a.UserId == userThatCompletedALesson)
+            .Where(a => a.Achievement.ObjectiveTarget == ObjectiveTarget.Chapter)
+            .Where(a => a.Achievement.ObjectiveGoal > a.Progress)
+            .Select(a => a.Progress)
+            .FirstOrDefaultAsync();
+
+        Assert.True(counterAfterUpdate > counterBeforeUpdate);
+    }
+
+    [Fact]
+    public async Task IncreaseAchievementProgressFor_Course()
+    {
+        int userThatCompletedALesson = 1;
+        int counterBeforeUpdate = await _context.UserAchievement
+            .Include(a => a.Achievement)
+            .Where(a => a.UserId == userThatCompletedALesson)
+            .Where(a => a.Achievement.ObjectiveTarget == ObjectiveTarget.Course)
+            .Where(a => a.Achievement.ObjectiveGoal > a.Progress)
+            .Select(a => a.Progress)
+            .FirstOrDefaultAsync();
+
+        await _business.IncreaseAchievementProgressFor(userThatCompletedALesson, ObjectiveTarget.Course);
+
+        //Verify that the counter was updated
+        int counterAfterUpdate = await _context.UserAchievement
+            .Include(a => a.Achievement)
+            .Where(a => a.UserId == userThatCompletedALesson)
+            .Where(a => a.Achievement.ObjectiveTarget == ObjectiveTarget.Course)
+            .Where(a => a.Achievement.ObjectiveGoal > a.Progress)
+            .Select(a => a.Progress)
+            .FirstOrDefaultAsync();
+
+        Assert.True(counterAfterUpdate > counterBeforeUpdate);
+    }
+
+
 }

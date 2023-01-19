@@ -10,7 +10,9 @@ public class User
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public List<UserAchievement> Achievements { get; set; }
-    public List<UserLesson> UserLessons { get; set; }
+    public List<CompletedLesson> CompletedLessons { get; set; }
+    public List<CompletedChapter> CompletedChapters { get; set; }
+    public List<CompletedCourse> CompletedCourses { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

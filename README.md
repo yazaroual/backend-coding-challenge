@@ -2,9 +2,8 @@
 Backend coding challenge for Mimo
 
 - [X] Database
-- [ ] API
-- [ ] Endpoints documentation
-- [ ] Tests
-- [ ] Health checks
+- [X] API
+- [X] Endpoints documentation
+- [X] Tests
 - [ ] Github Actions
 - [ ] Database documentation
